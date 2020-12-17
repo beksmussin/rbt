@@ -1,32 +1,32 @@
 const webpack = require('webpack');
 const HtmlPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require(path);
+const path = require('path');
 
 module.exports = options => {
   return {
-    devServer:options.devServer,
+    devServer: options.devServer,
 
     entry: ['./src/index'],
 
     output: {
       path: `${__dirname}/dist`,
       filename:
-      process.env.NODE_ENV !='production' ? '[name].[hash:8].js' : '[name].[contenthash].js',
+        process.env.NODE_ENV !== 'production' ? '[name].[hash:8].js' : '[name].[contenthash].js',
       publicPath: '/',
     },
 
     module: {
       rules: [
         {
-          oneof: [
+          oneOf: [
             {
               test: /\.jsx?$/,
               loader: ['babel-loader'],
-              exclude: [/node_module/],
+              exclude: [/node_modules/],
             },
             {
-              test: /\.(less)?$/,
+              test: /\.(less)$/,
               use: [
                 {
                   loader: 'style-loader',
@@ -41,49 +41,50 @@ module.exports = options => {
             },
             {
               test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [
-                  {
-                    loader: 'file-loader',
-                    options: {
-                      name: '[name].[ext]',
-                      outputPath: 'fonts/',
-                    },
+              use: [
+                {
+                  loader: 'file-loader',
+                  options: {
+                    name: '[name].[ext]',
+                    outputPath: 'fonts/',
                   },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-
-      watch: options.watch,
-      watchOptions: {
-        aggregateTimeout: 300,
-      },
-      devtool: options.devtool,
-
-      resolve: {
-        modules: ['node_modules'],
-        extensions: ['.js', '.jsx'],
-      },
-
-      plugins: [
-        new webpack.EnvironmentPlugin(['NODE_ENV']),
-        new MiniCssExtractPlugin({
-          filename:
-          process.env.NODE_ENV !=='production'
-          ? '[name].[hash:8].css'
-          : '[nane].[contenthash].css',
-          chunkFilename:
-          process.env.NODE_ENV !=='production'
-          ? '[name].[hash:8].css'
-          : '[name].[contenthash].css',
-        }),
-        new HtmlPlugin({
-          title: 'RBT-GITHUB',
-          template: path.resolve(process.cwd(), 'index.html'),
-          filename: 'index.html',
-        }),
+                },
+              ],
+            },
+          ],
+        },
       ],
+    },
+
+    watch: options.watch,
+    watchOptions: {
+      aggregateTimeout: 300,
+    },
+
+    devtool: options.devtool,
+
+    resolve: {
+      modules: ['node_modules'],
+      extensions: ['.js', '.jsx'],
+    },
+
+    plugins: [
+      new webpack.EnvironmentPlugin(['NODE_ENV']),
+      new MiniCssExtractPlugin({
+        filename:
+          process.env.NODE_ENV !== 'production'
+            ? '[name].[hash:8].css'
+            : '[name].[contenthash].css',
+        chunkFilename:
+          process.env.NODE_ENV !== 'production'
+            ? '[name].[hash:8].css'
+            : '[name].[contenthash].css',
+      }),
+      new HtmlPlugin({
+        title: 'RBT',
+        template: path.resolve(process.cwd(), 'index.html'),
+        filename: 'index.html',
+      }),
+    ],
   };
 };

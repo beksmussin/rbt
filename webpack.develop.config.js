@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 module.exports = require('./webpack.init.config')({
-  buildMode:'develop',
+  buildMode: 'develop',
   devtool: 'source-map',
   debug: true,
   watch: true,
